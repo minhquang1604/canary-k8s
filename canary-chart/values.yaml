@@ -5,7 +5,7 @@ app:
   version: v2
 
 image:
-  repository: caominhquang1604/demo
+  repository: caominhquang1604/canary-app
   tag: 0fb44ba10d1cbcaf9bd81d0333cdde166558951e
 
 service:

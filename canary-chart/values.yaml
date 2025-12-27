@@ -1,0 +1,14 @@
+replicaCount: 2
+
+app:
+  name: canary-app
+  version: v1
+
+image:
+  repository: caominhquang1604/demo
+  tag: v1
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80

@@ -5,13 +5,13 @@ stable:
   enabled: true
   version: v1
   replicas: 2
-  imageTag: stable
+  imageTag: 71756bc6bbb113b35c520355d51242d7d4e73fb4
 
 canary:
   enabled: true
   version: v2
   replicas: 1
-  imageTag: 9c2b5d9965830f4c95667a8f02e4c6196e312821
+  imageTag: 71756bc6bbb113b35c520355d51242d7d4e73fb4
 
 image:
   repository: caominhquang1604/canary-app

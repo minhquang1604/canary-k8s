@@ -3,9 +3,8 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}
 spec:
-  type: {{ .Values.service.type }}
   selector:
     app: {{ .Values.app.name }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
+  - port: 80
+    targetPort: 5000

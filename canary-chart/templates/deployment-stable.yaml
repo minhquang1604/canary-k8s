@@ -1,0 +1,27 @@
+{{- if .Values.stable.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-v1
+spec:
+  replicas: {{ .Values.stable.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+        version: v1
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.image.repository }}:{{ .Values.stable.imageTag }}"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: VERSION
+          value: "v1"
+{{- end }}
+

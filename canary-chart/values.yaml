@@ -1,14 +1,22 @@
-replicaCount: 2
-
 app:
   name: canary-app
+
+stable:
+  enabled: true
+  version: v1
+  replicas: 2
+  imageTag: stable
+
+canary:
+  enabled: true
   version: v2
+  replicas: 1
+  imageTag: 9c2b5d9965830f4c95667a8f02e4c6196e312821
 
 image:
   repository: caominhquang1604/canary-app
-  tag: 0fb44ba10d1cbcaf9bd81d0333cdde166558951e
 
 service:
   type: NodePort
   port: 80
-  targetPort: 80
+  targetPort: 5000

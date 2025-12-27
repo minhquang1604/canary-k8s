@@ -2,11 +2,11 @@ replicaCount: 2
 
 app:
   name: canary-app
-  version: v1
+  version: v2
 
 image:
   repository: caominhquang1604/demo
-  tag: v1
+  tag: 0fb44ba10d1cbcaf9bd81d0333cdde166558951e
 
 service:
   type: NodePort

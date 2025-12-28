@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CanaryX – Crypto Exchange</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root {
+  --bg: #0b0e11;
+  --bg-soft: #161a1e;
+  --border: #22262e;
+  --text: #eaecef;
+  --muted: #848e9c;
+  --green: #0ecb81;
+  --red: #f6465d;
+  --yellow: #f0b90b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ===== HEADER ===== */
+header {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar {
+  max-width: 1400px;
+  margin: auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--yellow);
+  letter-spacing: 0.5px;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.nav a:hover {
+  color: var(--yellow);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.search {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: var(--text);
+}
+
+.search::placeholder {
+  color: var(--muted);
+}
+
+.btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-login {
+  background: none;
+  color: var(--text);
+}
+
+.btn-signup {
+  background: var(--yellow);
+  color: #000;
+}
+
+/* ===== MAIN ===== */
+.container {
+  max-width: 1400px;
+  margin: auto;
+  padding: 24px 20px;
+}
+
+.title {
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: var(--bg-soft);
+  font-size: 14px;
+}
+
+th, td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+tbody tr:hover {
+  background: #111418;
+}
+
+.coin {
+  font-weight: 600;
+}
+
+.symbol {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.up { color: var(--green); font-weight: 600; }
+.down { color: var(--red); font-weight: 600; }
+
+.chart-cell {
+  width: 130px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  margin-top: 50px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.footer-inner {
+  max-width: 1400px;
+  margin: auto;
+  padding: 30px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  font-size: 14px;
+}
+
+footer h4 {
+  margin-bottom: 10px;
+}
+
+footer a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+footer a:hover {
+  color: var(--text);
+}
+
+.copy {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="topbar">
+    <div class="logo">CanaryX</div>
+
+    <nav class="nav">
+      <a href="#">Markets</a>
+      <a href="#">Trade</a>
+      <a href="#">Derivatives</a>
+      <a href="#">Earn</a>
+      <a href="#">Learn</a>
+    </nav>
+
+    <div class="actions">
+      <input class="search" placeholder="Search..." />
+      <button class="btn btn-login">Log in</button>
+      <button class="btn btn-signup">Sign up</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="container">
+  <h2 class="title">Crypto Markets</h2>
+  <div class="subtitle">Version: <b>v2 Canary</b> • Dark UI</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Coin</th>
+        <th>Price</th>
+        <th>24h</th>
+        <th>Market Cap</th>
+        <th>Last 7 Days</th>
+      </tr>
+    </thead>
+    <tbody id="market"></tbody>
+  </table>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>About</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <a href="#">Exchange</a>
+      <a href="#">Wallet</a>
+      <a href="#">Launchpad</a>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Fees</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="copy">© 2025 CanaryX • Canary Deployment Demo</div>
+</footer>
+
+<script>
+const coins = ["bitcoin","ethereum","tether","binancecoin","solana","ripple"];
+
+async function loadMarket() {
+  const url =
+    `https://api.coingecko.com/api/v3/coins/markets` +
+    `?vs_currency=usd&ids=${coins.join(",")}&sparkline=true`;
+
+  const data = await fetch(url).then(r => r.json());
+  const tbody = document.getElementById("market");
+  tbody.innerHTML = "";
+
+  data.forEach((c, i) => {
+    const trend = c.price_change_percentage_24h >= 0 ? "up" : "down";
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td class="coin">${c.name} <span class="symbol">${c.symbol.toUpperCase()}</span></td>
+      <td>$${c.current_price.toLocaleString()}</td>
+      <td class="${trend}">${c.price_change_percentage_24h.toFixed(2)}%</td>
+      <td>$${c.market_cap.toLocaleString()}</td>
+      <td class="chart-cell"><canvas id="c-${c.id}" height="40"></canvas></td>
+    `;
+
+    tbody.appendChild(tr);
+
+    new Chart(document.getElementById(`c-${c.id}`), {
+      type: "line",
+      data: {
+        labels: c.sparkline_in_7d.price.map((_,i)=>i),
+        datasets: [{
+          data: c.sparkline_in_7d.price,
+          borderColor: trend === "up" ? "#0ecb81" : "#f6465d",
+          pointRadius: 0,
+          borderWidth: 2,
+          tension: 0.3
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { x: { display: false }, y: { display: false } }
+      }
+    });
+  });
+}
+
+loadMarket();
+setInterval(loadMarket, 60000);
+</script>
+
+</body>
+</html>
+

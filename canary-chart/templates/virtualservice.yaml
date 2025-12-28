@@ -4,16 +4,16 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   hosts:
-    - "*"
+  - "*"
   gateways:
-    - canary-gateway
+  - canary-gateway
   http:
-    - route:
-        - destination:
-            host: {{ .Release.Name }}
-            subset: v1
-          weight: 90
-        - destination:
-            host: {{ .Release.Name }}
-            subset: v2
-          weight: 10
+  - route:
+    - destination:
+        host: {{ .Release.Name }}
+        subset: stable
+      weight: 90
+    - destination:
+        host: {{ .Release.Name }}
+        subset: canary
+      weight: 10

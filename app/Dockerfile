@@ -1,7 +1,7 @@
-FROM python:3.10-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY app.py .
-ENV VERSION=unknown
-CMD ["python", "app.py"]
+FROM nginx:alpine
+
+# copy web tĩnh
+COPY dist/ /usr/share/nginx/html
+
+# copy nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf

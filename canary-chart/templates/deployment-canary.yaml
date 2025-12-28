@@ -1,26 +1,21 @@
-{{- if .Values.canary.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-v2
+  name: {{ .Release.Name }}-canary
 spec:
-  replicas: {{ .Values.canary.replicas }}
+  replicas: 1
   selector:
     matchLabels:
       app: {{ .Values.app.name }}
-      version: v2
+      version: canary
   template:
     metadata:
       labels:
         app: {{ .Values.app.name }}
-        version: v2
+        version: canary
     spec:
       containers:
       - name: app
-        image: "{{ .Values.image.repository }}:{{ .Values.canary.imageTag }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.canary.tag }}"
         ports:
-        - containerPort: 5000
-        env:
-        - name: VERSION
-          value: "v2"
-{{- end }}
+        - containerPort: 80

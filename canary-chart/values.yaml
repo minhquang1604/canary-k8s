@@ -6,8 +6,8 @@ image:
 
 stable:
   version: stable
-  tag: "stable"        # tag cố định (hoặc commit đã promote)
+  tag: "87ade2a"        # tag cố định (hoặc commit đã promote)
 
 canary:
   version: canary
-  tag: "latest"        # CI sẽ update chỗ này
+  tag: "87ade2a"        # CI sẽ update chỗ này

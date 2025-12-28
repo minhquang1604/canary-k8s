@@ -10,4 +10,4 @@ stable:
 
 canary:
   version: canary
-  tag: "939bc6e"        # CI sẽ update chỗ này
+  tag: "5ee316d"

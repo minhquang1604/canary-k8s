@@ -18,18 +18,18 @@ jobs:
     # =============================
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     # =============================
-    # 2. Set image tag (commit SHA)
+    # 2. Set image tag = commit SHA
     # =============================
     - name: Set image tag
-      id: vars
       run: |
-        TAG=$(git rev-parse --short HEAD)
-        echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+        echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     # =============================
-    # 3. Docker login
+    # 3. Login Docker Hub
     # =============================
     - name: Login to Docker Hub
       uses: docker/login-action@v3
@@ -38,20 +38,25 @@ jobs:
         password: ${{ secrets.DOCKER_PASS }}
 
     # =============================
-    # 4. Build & push image
+    # 4. Build & push Docker image
     # =============================
     - name: Build and push Docker image
       run: |
-        docker build -t $IMAGE_NAME:${IMAGE_TAG} ./app
-        docker push $IMAGE_NAME:${IMAGE_TAG}
+        docker build -t $IMAGE_NAME:$IMAGE_TAG ./app
+        docker push $IMAGE_NAME:$IMAGE_TAG
 
     # =============================
     # 5. Update CANARY tag only
     # =============================
     - name: Update canary image tag in Helm values
       run: |
-        echo "Updating canary.tag to ${IMAGE_TAG}"
-        sed -i "s|tag:.*|tag: \"${IMAGE_TAG}\"|" canary-chart/values.yaml
+        echo "Before:"
+        grep -n "canary:" -A3 canary-chart/values.yaml
+
+        sed -i "/canary:/,/tag:/ s|tag:.*|tag: \"$IMAGE_TAG\"|" canary-chart/values.yaml
+
+        echo "After:"
+        grep -n "canary:" -A3 canary-chart/values.yaml
 
     # =============================
     # 6. Commit & push Helm change
@@ -61,6 +66,9 @@ jobs:
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
 
+        git status
+        git diff
+
         git add canary-chart/values.yaml
-        git commit -m "ci: update canary image tag to ${IMAGE_TAG}" || echo "No changes"
-        git push
+        git commit -m "ci: update canary image tag to $IMAGE_TAG"
+        git push origin main

@@ -13,6 +13,8 @@ spec:
 
   service:
     port: 80
+    gateways:
+    - canary-gateway
 
   analysis:
     interval: 30s
@@ -30,4 +32,3 @@ spec:
       thresholdRange:
         max: 500
       interval: 30s
-

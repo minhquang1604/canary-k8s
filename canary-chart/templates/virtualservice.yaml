@@ -12,8 +12,8 @@ spec:
     - destination:
         host: {{ .Release.Name }}
         subset: stable
-      weight: 0
+      weight: 100
     - destination:
         host: {{ .Release.Name }}
         subset: canary
-      weight: 100
+      weight: 0

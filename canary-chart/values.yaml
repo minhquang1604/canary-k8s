@@ -1,13 +1,5 @@
-app:
-  name: canary-app
+replicaCount: 2
 
 image:
   repository: caominhquang1604/canary-app
-
-stable:
-  version: stable
-  tag: "512e33c"        # tag cố định (hoặc commit đã promote)
-
-canary:
-  version: canary
-  tag: "6ac6296"
+  tag: "1360329"

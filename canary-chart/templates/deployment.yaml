@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -11,7 +13,9 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
-        version: v1
+        version: stable
+      annotations:
+        istio.io/rev: default
     spec:
       containers:
         - name: app
@@ -24,3 +28,10 @@ spec:
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 5
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi

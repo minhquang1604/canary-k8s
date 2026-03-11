@@ -2,8 +2,10 @@ apiVersion: flagger.app/v1beta1
 kind: Canary
 metadata:
   name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
 spec:
   provider: istio
+  replicas: {{ .Values.replicaCount }}
 
   targetRef:
     apiVersion: apps/v1
@@ -12,25 +14,49 @@ spec:
 
   service:
     port: 80
+    targetPort: 80
     gateways:
       - canary-gateway
     hosts:
       - "*"
 
   analysis:
-    interval: 30s
-    threshold: 5
+    interval: 1m
+    threshold: 3
     maxWeight: 50
     stepWeight: 10
 
     metrics:
       - name: request-success-rate
+        interval: 1m
         thresholdRange:
           min: 99
-        interval: 30s
+        successCondition: result[0].value >= 99
 
       - name: request-duration
+        interval: 1m
         thresholdRange:
           max: 500
-        interval: 30s
+        successCondition: result[0].value <= 500
+
+      - name: istio_requests_total
+        interval: 1m
+        thresholdRange:
+          min: 10
+
+    webhooks:
+      - name: readiness-check
+        url: http://{{ .Release.Name }}.{{ .Release.Namespace }}.svc:80/
+        timeout: 30s
+        metadata:
+          type: HealthCheck
+
+      - name: load-test
+        url: http://flagger-loadtester.istio-system/
+        timeout: 30s
+        metadata:
+          type: curl
+          cmd: "curl -sf http://{{ .Release.Name }}-canary.{{ .Release.Namespace }}/"
+
+  progressDeadlineSeconds: 60
 

@@ -23,19 +23,34 @@ jobs:
         username: ${{ secrets.DOCKER_USER }}
         password: ${{ secrets.DOCKER_PASS }}
 
-    - name: Build & push
+    - name: Build & push canary image
       run: |
-        docker build --build-arg VERSION=$TAG -t $IMAGE:$TAG ./app
+        docker build --build-arg VERSION=$TAG -t $IMAGE:canary-$TAG -t $IMAGE:$TAG ./app
+        docker push $IMAGE:canary-$TAG
         docker push $IMAGE:$TAG
 
-    - name: Update canary tag
+    - name: Update canary tag in Helm values
       run: |
-        sed -i "s|canary:.*|canary:\n  tag: \"$TAG\"|" canary-chart/values.yaml
+        cat > canary-chart/values.yaml << EOF
+        replicaCount: 2
 
-    - name: Commit
+        image:
+          repository: $IMAGE
+          tag: "canary-$TAG"
+        
+        canary:
+          enabled: true
+        EOF
+
+    - name: Commit and push
       run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
         git add canary-chart/values.yaml
-        git commit -m "ci: update canary image $TAG" || true
+        git commit -m "ci: deploy canary version $TAG" || true
         git push
+
+    - name: Wait for canary analysis
+      run: |
+        echo "Waiting for Flagger canary analysis..."
+        echo "Check canary status with: kubectl get canary -n default"

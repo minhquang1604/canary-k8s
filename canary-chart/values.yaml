@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: caominhquang1604/canary-app
-  tag: "canary-050d859"
+  tag: "canary-6870c41"
 
 canary:
   enabled: true

@@ -2,16 +2,7 @@
 
 ## Kiến trúc
 
-```
-Git Push → GitHub Actions → Docker Hub → ArgoCD → Kubernetes
-                                                    ↓
-                                            Istio Gateway
-                                                    ↓
-                                               Flagger
-                                            (Canary Analysis)
-                                               ↓         ↓
-                                        Promote      Rollback
-```
+![Architecture](img/architecture.png)
 
 ## Yêu cầu
 

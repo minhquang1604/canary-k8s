@@ -1,4 +1,4 @@
-# Canary Release với Istio & Flagger
+# Canary Deployment on Kubernetes với Istio & Flagger
 
 ## Kiến trúc
 
